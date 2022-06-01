@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="calc.css" />
+
+    <title>Calculator</title>
+  </head>
+  <body>
+    <div class="calculator-box">
+      <div class="result-box">
+        <p id="result"></p>
+      </div>
+      <div class="box-operator">
+        <button onclick="limpar()" class="ac">AC</button>
+        <button onclick="apagar()">Del</button>
+        <button onclick="insertOp('x')">X</button>
+        <button onclick="insert('1')">1</button>
+        <button onclick="insert('2')">2</button>
+        <button onclick="insert('3')">3</button>
+        <button onclick="insertOp('÷')">÷</button>
+        <button onclick="insert('4')">4</button>
+        <button onclick="insert('5')">5</button>
+        <button onclick="insert('6')">6</button>
+        <button onclick="insert('-')">-</button>
+        <button onclick="insert('7')">7</button>
+        <button onclick="insert('8')">8</button>
+        <button onclick="insert('9')">9</button>
+        <button onclick="insert('+')">+</button>
+        <button onclick="insert('.')">.</button>
+        <button onclick="insert('0')" class="zero">0</button>
+        <button onclick="calc()">=</button>
+      </div>
+    </div>
+    <script src="scripts.js"></script>
+  </body>
+</html>
