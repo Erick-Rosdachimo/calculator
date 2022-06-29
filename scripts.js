@@ -1,6 +1,6 @@
 function insert(num) {
   var preview = document.getElementById('result').innerHTML
-  if (preview == Infinity || preview == -Infinity) {
+  if (resultError()) {
     document.getElementById('result').innerHTML = ''
   } else {
     document.getElementById('result').innerHTML = preview + num
@@ -15,7 +15,7 @@ function insertOp(operator) {
 
   var char = preview[lengthPreview - 2]
 
-  if (preview == Infinity || preview == -Infinity) {
+  if (resultError()) {
     document.getElementById('result').innerHTML = ''
   } else if (preview === '' || preview === '-' || preview === '+') {
   } else if (
@@ -47,7 +47,7 @@ function insertSoma(Op) {
   var lastCharacter = preview[lengthPreview - 1]
   var char = preview[lengthPreview - 2]
 
-  if (preview == Infinity || preview == -Infinity) {
+  if (resultError()) {
     document.getElementById('result').innerHTML = ''
   } else if (lastCharacter === '+') {
   } else if (lastCharacter === '-' && char === '+') {
@@ -69,7 +69,7 @@ function insertSub(Ope) {
   var lastCharacter = preview[lengthPreview - 1]
   var char = preview[lengthPreview - 2]
 
-  if (preview == Infinity || preview == -Infinity) {
+  if (resultError()) {
     document.getElementById('result').innerHTML = ''
   } else if (lastCharacter === '-') {
   } else if (lastCharacter === '+' && char === '-') {
@@ -84,15 +84,12 @@ function insertSub(Ope) {
   }
 }
 
-var calcuConfirm
-var previewConfirm
-
 function calc() {
   var resultado = document.getElementById('result').innerHTML
 
   // trocando os simbolos de multiplicação e divisao
-  var divisao = resultado.replace(/÷/, '/')
-  var calcu = divisao.replace(/x/, '*')
+  var divisao = resultado.replace(/÷/g, '/')
+  var calcu = divisao.replace(/x/g, '*')
 
   var preview = document.getElementById('result').innerHTML
   calcuConfirm = calcu
@@ -104,37 +101,41 @@ function calc() {
 
   // calculando o resultado
 
-  if (preview == Infinity || preview == -Infinity || preview == '') {
-    document.getElementById('result').innerHTML = ''
-  } else if (
-    (lastCharacter === '-' ||
+  try {
+    if (resultError()) {
+      document.getElementById('result').innerHTML = ''
+    } else if (
+      (lastCharacter === '-' ||
+        lastCharacter === 'x' ||
+        lastCharacter === '+' ||
+        lastCharacter === '÷') &&
+      (char === '+' || char === 'x' || char === '-' || char === '÷')
+    ) {
+      document.getElementById('result').innerHTML = calcu.substring(
+        0,
+        calcu.length - 2
+      )
+      document.getElementById('result').innerHTML = eval(
+        document.getElementById('result').innerHTML
+      )
+    } else if (
+      lastCharacter === '-' ||
       lastCharacter === 'x' ||
       lastCharacter === '+' ||
-      lastCharacter === '÷') &&
-    (char === '+' || char === 'x' || char === '-' || char === '÷')
-  ) {
-    document.getElementById('result').innerHTML = calcu.substring(
-      0,
-      calcu.length - 2
-    )
-    document.getElementById('result').innerHTML = eval(
-      document.getElementById('result').innerHTML
-    )
-  } else if (
-    lastCharacter === '-' ||
-    lastCharacter === 'x' ||
-    lastCharacter === '+' ||
-    lastCharacter === '÷'
-  ) {
-    document.getElementById('result').innerHTML = calcu.substring(
-      0,
-      calcu.length - 1
-    )
-    document.getElementById('result').innerHTML = eval(
-      document.getElementById('result').innerHTML
-    )
-  } else {
-    document.getElementById('result').innerHTML = eval(calcu)
+      lastCharacter === '÷'
+    ) {
+      document.getElementById('result').innerHTML = calcu.substring(
+        0,
+        calcu.length - 1
+      )
+      document.getElementById('result').innerHTML = eval(
+        document.getElementById('result').innerHTML
+      )
+    } else {
+      document.getElementById('result').innerHTML = eval(calcu)
+    }
+  } catch (error) {
+    document.getElementById('result').innerHTML = 'Valor invalido!'
   }
 }
 
@@ -144,12 +145,23 @@ function limpar() {
 
 function apagar() {
   var preview = document.getElementById('result').innerHTML
-  if (preview == Infinity || preview == -Infinity) {
+  if (resultError()) {
     document.getElementById('result').innerHTML = ''
   } else {
     document.getElementById('result').innerHTML = preview.substring(
       0,
       preview.length - 1
     )
+  }
+}
+
+const resultError = () => {
+  var preview = document.getElementById('result').innerHTML
+  if (
+    preview == Infinity ||
+    preview == -Infinity ||
+    preview == 'Valor invalido!'
+  ) {
+    return true
   }
 }
